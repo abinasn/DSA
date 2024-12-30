@@ -73,3 +73,22 @@ Create a compose function that takes a series of functions and executes them
 from right to left on an input value
  *  
 */ 
+
+const add = x => x+5;
+const subtract = x => x - 2;
+const multiply = x => x * 5;
+
+function pipe(...fns){
+    return function(x){
+        return fns.reduce((result, fn)=>fn(result), x)
+    }
+}
+
+function compose(...fns){
+    return function(x){
+        return fns.reduceRight((result, fn)=>fn(result), x);
+    }
+}
+
+console.log(pipe(add, subtract, multiply)(5));
+console.log(compose(add, subtract, multiply)(5));
