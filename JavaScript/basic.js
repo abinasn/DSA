@@ -115,7 +115,214 @@
 
 // console.log( parseInt('2n9c', 36) ); // 123456
 
-let str = "stringify";
-const s = str.substr(2,6);
-console.log(str, s)
+// let str = "stringify";
+// const s = str.substr(2,6);
+// console.log(str, s)
 
+
+// let arr = [1, 2];
+
+// let arrayLike = {
+//   0: "something",
+//   1: 2,
+//   length: 2,
+//   [Symbol.isConcatSpreadable]: true
+// };
+
+// console.log( arr.concat(arrayLike) );
+
+// let obj = {
+//     first: 2,
+//     last: 5
+// }
+
+// obj[Symbol.iterator] = function(){
+//     return{
+//         first: this.first,
+//         last: this.last,
+//         next: function(){
+//             if(this.first <= this.last){
+//                 return {done: false, value: this.first++}
+//             }else{
+//                 return {done: true}
+//             }
+//         }
+//     }
+// }
+
+
+// let obj = {
+//     first: 1,
+//     last: 5,
+
+//     [Symbol.iterator](){
+//         return this
+//     },
+//     next: function(){
+//         if(this.first <= this.last){
+//             return {done: false, value: this.first++}
+//         }else{
+//             return {done: true}
+//         }
+//     }
+// }
+
+// for(let v of obj){
+//     console.log(v)
+// }
+
+
+// let str = "Hello";
+
+// const itr = str[Symbol.iterator]();
+
+// while(true){
+//     const result = itr.next();
+//     if(result.done) break;
+//     console.log(result.value);
+// }
+
+// let arr = {
+//     0: "Hello",
+//     1: "World",
+//     length: 2
+// }
+
+// console.log(Array.from(arr))
+
+
+//Map and Set
+// const map = new Map([
+//     [1, "num"],
+//     ["1", "str"],
+//     [true, "bool"]
+// ]);
+
+// for(let key of map.keys()){
+//     console.log(key)
+// }
+// for(let value of map.values()){
+//     console.log(value)
+// }
+// for(let entry of map){
+//     console.log(entry)
+// }
+
+// let obj={
+//     name: "john",
+//     age: 30
+// }
+
+// console.log(Object.entries(obj))
+
+// let map = new Map();
+// map.set('banana', 1);
+// map.set('orange', 2);
+// map.set('meat', 4);
+
+// let obj = Object.fromEntries(map); // make a plain object (*)
+// console.log(obj.orange); // 2
+
+// let set = new Set(["oranges", "apples", "bananas"]);
+
+// // for (let value of set) console.log(value);
+
+// // the same with forEach:
+// set.forEach((value, valueAgain, set) => {
+//   console.log(value, valueAgain, set);
+// });
+
+
+// let john = { name: "John" };
+// const map = new WeakMap([
+//     [john, "TEST"]
+// ]);
+// // john = null;
+// console.log(map.has(john), map)
+// for(let item in map){
+//     console.log(item)
+// }
+
+
+// let prices = {
+//     banana: 20,
+//     apple: 30,
+//     orange: 40
+// }
+
+// const doublePrices = Object.fromEntries(Object.entries(prices).map(ent=>[ent[0], ent[1]*2]));
+// console.log(doublePrices) //{ banana: 40, apple: 60, orange: 80 }
+
+// const queryString = "?name=John&age=30&city=NewYork";
+// const urlParams = new URLSearchParams(queryString);
+// const paramsObject = Object.fromEntries(urlParams);
+
+// console.log(paramsObject); // { name: 'John', age: '30', city: 'NewYork' }
+
+// let salaries = {
+//     "John": 100,
+//     "Pete": 300,
+//     "Mary": 250
+// };
+// function sumSalaries(s){
+//     return Object.entries(s).reduce((sum,curr)=>sum + curr[1], 0)
+// }
+// console.log(sumSalaries(salaries));
+
+// const time = new Date("2025-01-14").getDay()
+// console.log(time, new Date(time))
+
+// let company = {
+//     sales: [{
+//         name: 'John',
+//         salary: 1000
+//     }, {
+//         name: 'Alice',
+//         salary: 1600
+//     }],
+
+//     development: {
+//         sites: [{
+//             name: 'Peter',
+//             salary: 2000
+//         }, {
+//             name: 'Alex',
+//             salary: 1800
+//         }],
+
+//         internals: [{
+//             name: 'Jack',
+//             salary: 1300
+//         }]
+//     }
+// };
+
+// const sumSalaries = (depts) =>{
+//     let sum = 0;
+//     if(Array.isArray(depts)){
+//         return depts.reduce((s,d)=>s+d.salary , 0);
+//     }else{
+//         for(let value of Object.values(depts)){
+//             sum+=sumSalaries(value);
+//         }
+//     }
+//     return sum;
+// }
+
+// console.log(sumSalaries(company))
+
+// console.log([1,2,[3,[4,5]]].flat(Infinity));
+
+function makeCounter() {
+    let count = 0;
+
+    return function () {
+        return count++;
+    };
+}
+
+let counter = makeCounter();
+
+console.log(counter()); // 0
+console.log(counter()); // 1
+console.log(counter()); // 2
