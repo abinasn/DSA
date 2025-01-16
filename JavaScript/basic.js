@@ -313,16 +313,105 @@
 
 // console.log([1,2,[3,[4,5]]].flat(Infinity));
 
-function makeCounter() {
-    let count = 0;
+// function makeCounter() {
+//     let count = 0;
 
-    return function () {
-        return count++;
-    };
+//     return function () {
+//         return count++;
+//     };
+// }
+
+// let counter = makeCounter();
+
+// console.log(counter()); // 0
+// console.log(counter()); // 1
+// console.log(counter()); // 2
+
+/**
+ * 1. No block scope for var.
+ * 
+ *  
+if (Math.random() > 0.5) {
+    var x = 1;
+} else {
+    var x = 2;
+}
+console.log(x);
+ * 2. If var in declared with in a function then that variable can be accessible within that function scope.
+ *      
+function test() {
+    if (Math.random() > 0.5) {
+        var value = true;
+    } else {
+        var value = false;
+    }
+    console.log(value); // Works
 }
 
-let counter = makeCounter();
+test();
+console.log(value) // Reference error
+ * 3. in loop var also worked as a global variable.
+ * 4. 
+ */
 
-console.log(counter()); // 0
-console.log(counter()); // 1
-console.log(counter()); // 2
+
+
+// Ways to create IIFE (Immediately Invoked Function Expression)
+
+// (function () {
+//     console.log("Parentheses around the function");
+// })();
+
+// (function () {
+//     console.log("Parentheses around the whole thing");
+// }());
+
+// !function () {
+//     console.log("Bitwise NOT operator starts the expression");
+// }();
+
+// +function () {
+//     console.log("Unary plus starts the expression");
+// }();
+
+
+// function hello(){
+//     console.log("Hello");
+//     hello.counter++;
+// }
+// hello.counter = 0;
+// hello();
+// hello();
+// console.log(hello.counter)
+
+// const indigo = {
+//     name: "Indigo",
+//     code: "IN",
+//     bookings: [],
+//     book(pName){
+//         console.log(`Book a flight in ${this.name} for ${pName} from BLR to BBI.`);
+//         this.bookings.push({name: pName})
+//     }
+// }
+
+// const book = indigo.book;
+// book.call(indigo, "Abinas") // take this and argument list
+// book.apply(indigo, ["asdsa"]) // take this and arguments in array
+// const bookBind = book.bind(indigo, "ASKS");
+// bookBind()
+// console.log(indigo)
+
+
+let group = {
+    title: "Our Group",
+    students: ["John", "Pete", "Alice"],
+
+    showList() {
+        this.students.forEach((student) =>{
+            // Error: Cannot read property 'title' of undefined
+            console.log(this.title + ': ' + student);
+        });
+    }
+};
+
+group.showList();
