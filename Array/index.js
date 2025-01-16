@@ -19,6 +19,21 @@ Array.prototype.customAt = function(i){
     return i >= 0 ? this[i] : this[this.length + i];
 }
 
+//concat()
+Array.prototype.customConcat = function(...elements){
+  let output = [...this];
+  for(let ele of elements){
+    if(Array.isArray(ele)){
+      for(let e of ele){
+        output[output.length] = e;
+      }
+    }else{
+      output[output.length] = ele;
+    }
+  }
+  return output;
+}
+
 //add an element at the end of the array
 Array.prototype.customPush = function (...elements) {
   if (!Array.isArray(this)) {
