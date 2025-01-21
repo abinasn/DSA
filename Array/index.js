@@ -1,105 +1,64 @@
+//All array methods
+
+//Array.from()-------------------------------
 /**
- * Array is a linear data structure where all elements are arranged sequentially
- *
- * In JavaScript, array can store anything, it doesn't have to be typed. i.e.
- *
- * const arr = [1, "string", true, function(){ console.log("Hello")}, null, undefined]
+ * Array.from(arrayLike)
+Array.from(arrayLike, mapFn)
+Array.from(arrayLike, mapFn, thisArg)
  */
 
-// --------------------------------------------
-/**
- * Array methods with polyfills
- */
 
-//Push && pop
-let array = [1, 2, 3, 4, 5];
+// console.log(Array.from("foo"));
+// console.log(Array.from([1,2,3], (x)=> x*2));
+// console.log(Array.from(new Set([1,2,3,4,1])))
 
-//at() method
-Array.prototype.customAt = function(i){
-    return i >= 0 ? this[i] : this[this.length + i];
-}
+let arr = [1, 2, 3, 4, 5];
+//Array.prototype.at(index) //takes an integer of positive and negative
+// console.log(arr.at(1), arr.at(-1))
 
-//concat()
-Array.prototype.customConcat = function(...elements){
-  let output = [...this];
-  for(let ele of elements){
-    if(Array.isArray(ele)){
-      for(let e of ele){
-        output[output.length] = e;
-      }
-    }else{
-      output[output.length] = ele;
-    }
-  }
-  return output;
-}
-console.log(array.concat([1,2,3], [34,5,6]))
+//Array.prototype.concat(...arguments) // merge 2 arrays return new array. Doesn't change the original array
+// console.log(arr.concat([1,2,3]), arr)
 
-//add an element at the end of the array
-Array.prototype.customPush = function (...elements) {
-  if (!Array.isArray(this)) {
-    throw new TypeError(
-      "Array.prototype.customPush called on a non-array object"
-    );
-  }
-  for (let element of elements) {
-    this[this.length] = element;
-  }
-  return this.length;
-};
-// console.log(array.customPush(null), array);
+// Array.prototype.copyWithin(target, strat, end) 
+// console.log(arr.copyWithin(0, 3)) // Paste at index 0 from 3rd position to onwards. [4,5] will come to beginning
+// console.log(arr.copyWithin(0,3,4)); //[4]
+// console.log(arr.copyWithin(-2, 0)) 
 
-//remove an element from end
-Array.prototype.customPop = function () {
-  if (!Array.isArray(this)) {
-    throw new TypeError(
-      "Array.prototype.customPop called on a non-array object"
-    );
-  }
-  if (this.length == 0) return undefined;
-  const popped = this[this.length - 1];
-  this.length = this.length - 1;
-  return popped;
-};
-// console.log(array.customPop(), array);
+// Array.prototype.entries() //returns an iterator with key/value pair
+// let it = arr.entries();
+// console.log(it.next().value);
+// console.log(it.next().value);
 
-//remove an element from beginning
-Array.prototype.customShift = function () {
-  if (!Array.isArray(this)) {
-    throw new TypeError(
-      "Array.prototype.customShift called on a non-array object"
-    );
-  }
-  if (this.length == 0) return undefined;
-  let shifted = this[0];
-  for (let i = 1; i < this.length; i++) {
-    this[i - 1] = this[i];
-  }
-  this.length = this.length - 1;
-  return shifted;
-};
-// console.log(array.customShift(), array)
+// for(let [index, element] of arr.entries()){
+//     console.log(index, element)
+// }
 
-//add an element from beginning
-Array.prototype.customUnshift = function (...elements) {
-  //create space from left
-  // for(let i=this.length-1; i>=0;i--){
-  //     this[i + elements.length] = this[i];
-  // }
-  // for(let i=0;i<elements.length;i++){
-  //     this[i] = elements[i]
-  // }
-  // return this.length;
+// Array.prototype.every(element, index, array) //check if array passes the condition/test. returns boolean
+// console.log(arr.every(a=>a < 10));
+// console.log(arr.every(a=>a > 10))
 
-  //in one loop
-  let length = this.length + elements.length;
-  for (let i = length - 1; i >= 0; i--) {
-    if(i>=elements.length){
-        this[i] = this[i - elements.length];
-    }else{
-        this[i] = elements[i]
-    }
-  }
-  return this.length;
-};
-// console.log(array.customUnshift(-1, 0), array);
+// Array.prototype.fill(value, start, end) // fill value from start to end, default complete array, returns updated array and changes the original array
+// console.log(arr.fill(1)); //fill all position with 1
+// console.log(arr.fill(1,2)); //fill 1 from position 2 to end of the array
+// console.log(arr.fill(1, 1, 3)); //fill 1 to 3(exclusive) 
+
+// Array.prototype.filter(Element, index, array) //create a new array on basis of test/condion;
+// console.log(arr.filter(a=>a%2 == 0));
+// console.log(arr.filter(a=>a%2 != 0));
+
+// Array.prototype.find() // provides the first found element else undefined
+// console.log(arr.find(a=>a>26));
+
+// Array.prototype.findIndex() //provides the first index on basis of condition/test else -1
+// console.log(arr.findIndex(a=>a==3), arr.findIndex(a=>a==9))
+
+// Array.prototype.findLast() //opposite of find, it iterates the array in reverse order to find the first element on basis of condition
+// Array.prototype.findLastIndex()//opposite of findIndex
+
+
+// // Array.prototype.flat() //flat the array in 1d on basis of argument
+// console.log([1,2,[3,4,[5,6, [7,8, [9,10]]]]].flat());
+// console.log([1,2,[3,4,[5,6, [7,8, [9,10]]]]].flat(2));
+// console.log([1,2,[3,4,[5,6, [7,8, [9,10]]]]].flat(3));
+// console.log([1,2,[3,4,[5,6, [7,8, [9,10]]]]].flat(Infinity)); //complete 1D
+
