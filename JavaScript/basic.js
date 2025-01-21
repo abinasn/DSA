@@ -35,7 +35,6 @@
 //     console.log(+code); // 49, 41, 44, 1
 // }
 
-
 // let id = Symbol.for("id");
 // let user = {
 //   name: "John",
@@ -46,8 +45,7 @@
 // for (let key in user) console.log(key); // name, age (no symbols)
 
 // // the direct access by the symbol works
-// console.log( "Direct: " + user[id] ); 
-
+// console.log( "Direct: " + user[id] );
 
 // let o1 = {
 //     name: "John",
@@ -66,7 +64,6 @@
 // if(zero) console.log("if");
 // else console.log("else");
 
-
 // let str = 1e-2;
 
 // console.log(str);
@@ -83,14 +80,12 @@
 // console.log(+num.toFixed(2));
 // console.log(isFinite(0.1 + 0.2 + "ASD"));
 
-
 // console.log( Number.isNaN(NaN) ); // true
 // console.log( Number.isNaN("str" / 2) ); // true
 
 // // Note the difference:
 // console.log( Number.isNaN("str") ); // false, because "str" belongs to the string type, not the number type
 // console.log( isNaN("str") );
-
 
 // console.log( Number.isFinite(123) ); // true
 // console.log( Number.isFinite(Infinity) ); // false
@@ -100,14 +95,12 @@
 // console.log( Number.isFinite("123") ); // false, because "123" belongs to the string type, not the number type
 // console.log( isFinite("123") ); // true, because isFinite converts string "123" into a number 123
 
-
 // console.log( parseInt('100px') ); // 100
 // console.log( parseFloat('12.5em') ); // 12.5
 
 // console.log( parseInt('12.3') ); // 12, only the integer part is returned
 // console.log( parseFloat('12.3.4') ); // 12.3, the second point stops the reading
 // console.log(parseInt('a123')) // NaN
-
 
 // parseInt(string, radix)
 // console.log( parseInt('0xff', 16) ); // 255
@@ -118,7 +111,6 @@
 // let str = "stringify";
 // const s = str.substr(2,6);
 // console.log(str, s)
-
 
 // let arr = [1, 2];
 
@@ -150,7 +142,6 @@
 //     }
 // }
 
-
 // let obj = {
 //     first: 1,
 //     last: 5,
@@ -171,7 +162,6 @@
 //     console.log(v)
 // }
 
-
 // let str = "Hello";
 
 // const itr = str[Symbol.iterator]();
@@ -189,7 +179,6 @@
 // }
 
 // console.log(Array.from(arr))
-
 
 //Map and Set
 // const map = new Map([
@@ -232,7 +221,6 @@
 //   console.log(value, valueAgain, set);
 // });
 
-
 // let john = { name: "John" };
 // const map = new WeakMap([
 //     [john, "TEST"]
@@ -242,7 +230,6 @@
 // for(let item in map){
 //     console.log(item)
 // }
-
 
 // let prices = {
 //     banana: 20,
@@ -354,8 +341,6 @@ console.log(value) // Reference error
  * 4. 
  */
 
-
-
 // Ways to create IIFE (Immediately Invoked Function Expression)
 
 // (function () {
@@ -373,7 +358,6 @@ console.log(value) // Reference error
 // +function () {
 //     console.log("Unary plus starts the expression");
 // }();
-
 
 // function hello(){
 //     console.log("Hello");
@@ -401,17 +385,37 @@ console.log(value) // Reference error
 // bookBind()
 // console.log(indigo)
 
+// let group = {
+//     title: "Our Group",
+//     students: ["John", "Pete", "Alice"],
 
-let group = {
-    title: "Our Group",
-    students: ["John", "Pete", "Alice"],
+//     showList() {
+//         this.students.forEach((student) =>{
+//             // Error: Cannot read property 'title' of undefined
+//             console.log(this.title + ': ' + student);
+//         });
+//     }
+// };
 
-    showList() {
-        this.students.forEach((student) =>{
-            // Error: Cannot read property 'title' of undefined
-            console.log(this.title + ': ' + student);
-        });
-    }
-};
+// group.showList();
+// "use strict"
+// let user = {
+//     name: "abinas"
+// }
 
-group.showList();
+// let desc = Object.defineProperty(user, "name", {writable: false});
+// user.name = "sda"
+// console.log(desc, user)
+
+// let animal = {
+//   eats: true,
+// };
+// let rabbit = {
+//   jumps: true,
+// };
+
+// rabbit.__proto__ = animal; // (*)
+
+// // we can find both properties in rabbit now:
+// console.log(rabbit.eats, rabbit); // true (**)
+// console.log(rabbit.jumps);

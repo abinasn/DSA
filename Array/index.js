@@ -33,6 +33,7 @@ Array.prototype.customConcat = function(...elements){
   }
   return output;
 }
+console.log(array.concat([1,2,3], [34,5,6]))
 
 //add an element at the end of the array
 Array.prototype.customPush = function (...elements) {
@@ -101,4 +102,4 @@ Array.prototype.customUnshift = function (...elements) {
   }
   return this.length;
 };
-console.log(array.customUnshift(-1, 0), array);
+// console.log(array.customUnshift(-1, 0), array);
