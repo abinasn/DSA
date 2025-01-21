@@ -12,7 +12,7 @@
  * 9. rotate the list
  */
 
-class Node{
+class LinkedListNode{
     constructor(data){
         this.data = data;
         this.next = null;
@@ -25,11 +25,24 @@ class LinkedList{
     }
 
     addInBeginning(data){
-
+        const newNode = new LinkedListNode(data);
+        if(this.head){
+            newNode.next = this.head;
+        }
+        this.head = newNode;
     }
 
-    addInEndEnd(data){
-
+    addInEnd(data){
+        const newNode = new LinkedListNode(data);
+        if(!this.head){
+            this.head = newNode;
+            return;
+        }
+        let current = this.head;
+        while(current && current.next){
+            current = current.next;
+        }
+        current.next = newNode;
     }
 
     addInAPosition(data, pos){
