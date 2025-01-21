@@ -60,5 +60,7 @@ let arr = [1, 2, 3, 4, 5];
 // console.log([1,2,[3,4,[5,6, [7,8, [9,10]]]]].flat());
 // console.log([1,2,[3,4,[5,6, [7,8, [9,10]]]]].flat(2));
 // console.log([1,2,[3,4,[5,6, [7,8, [9,10]]]]].flat(3));
-// console.log([1,2,[3,4,[5,6, [7,8, [9,10]]]]].flat(Infinity)); //complete 1D
+// console.log([1,2,[3,4,[5,6, [7,8, [9,10]]]]].flat(Infinity)); //complete 1d
+
+
 
