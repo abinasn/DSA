@@ -513,13 +513,41 @@ console.log(value) // Reference error
 
 // executeUsingPromise().then(res=> console.log(res));
 
-const person = {
-    name: "John",
-    sayHi: function() {
-        console.log(this)
-        console.log("Hello " + this.name);
+// const person = {
+//     name: "John",
+//     sayHi: function() {
+//         console.log(this)
+//         console.log("Hello " + this.name);
+//     }
+// }
+// person.sayHi();
+// const greet = person.sayHi;
+// greet(); // Output: "Hi, undefined" because this is window object without strict mode. Because sayHi function is called without any context.
+
+
+var maximumProduct = function(nums) {
+    if(nums.length === 3){
+        return nums[0] * nums[1] * nums[2];
     }
-}
-person.sayHi();
-const greet = person.sayHi;
-greet(); // Output: "Hi, undefined" because this is window object without strict mode. Because sayHi function is called without any context.
+    let f = -Infinity, s= -Infinity, t = -Infinity, sm=Infinity, ssm=Infinity;
+    for(let num of nums){
+        if(f < num){
+            t = s;
+            s = f;
+            f = num
+        }else if (s < num){
+            t = s;
+            s = num
+        }else if(t < num){
+            t = num;
+        }
+
+        if(num < sm){
+            ssm = sm;
+            sm = num;
+        }else if(num < ssm){
+            ssm = num;
+        }
+    }
+    return Math.max(f*s*t , f*sm*ssm);
+};
