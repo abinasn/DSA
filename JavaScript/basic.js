@@ -419,3 +419,107 @@ console.log(value) // Reference error
 // // we can find both properties in rabbit now:
 // console.log(rabbit.eats, rabbit); // true (**)
 // console.log(rabbit.jumps);
+
+
+// class Parent{
+//     showMessage(){
+//         return "Message from parent";
+//     }
+// }
+
+// const c = new Parent();
+// console.log(typeof Parent)
+// console.log(Parent === Parent.prototype.constructor);
+// console.log(Parent.prototype.showMessage());
+// console.log(Object.getOwnPropertyNames(Parent.prototype))
+
+// var x = 1;
+// {
+//     console.log(x); // ReferenceError
+//     const x = 2;
+// }
+
+
+// function createCounter(){
+//     let count = 0;
+//     return function() {
+//         return count++;
+//     }
+// }
+
+// const c = createCounter();
+// console.log(c());
+// console.log(c());
+
+
+// function debounce(fun, delay){
+//     let timeId = null
+    
+//     return function(...args){
+//         clearInterval(timeId);
+
+//         timeId = setTimeout(()=>{
+//             fun.apply(this, args)
+//         }, delay)
+//     }
+// }
+
+// // Without debouncing
+// searchInput.addEventListener('input', function(e) {
+//     searchAPI(e.target.value);
+// });
+
+// // With debouncing
+// searchInput.addEventListener('input', debounce(function(e) {
+//     searchAPI(e.target.value);
+// }, 500));
+
+
+//currying
+// function sum(a,b,c){
+//     return a+b+c;
+// }
+
+// //with currying
+// function curryingSum(a){
+//     return function(b){
+//         return function(c){
+//             return a+b+c;
+//         }
+//     }
+// }
+
+// console.log(curryingSum(12)(2)(3))
+
+
+// function execute(callback){
+//     setTimeout(()=>{
+//         callback("Callback execute")
+//     }, 2000)
+// }
+
+// execute((data)=>{
+//     console.log(data);
+// });
+
+
+// function executeUsingPromise(){
+//     return new Promise((resolve, reject)=>{
+//         setTimeout(()=>{
+//             resolve("Resolved");
+//         }, 1000)
+//     })
+// }
+
+// executeUsingPromise().then(res=> console.log(res));
+
+const person = {
+    name: "John",
+    sayHi: function() {
+        console.log(this)
+        console.log("Hello " + this.name);
+    }
+}
+person.sayHi();
+const greet = person.sayHi;
+greet(); // Output: "Hi, undefined" because this is window object without strict mode. Because sayHi function is called without any context.
