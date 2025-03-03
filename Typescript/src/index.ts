@@ -4,14 +4,14 @@ let isPublished: Boolean = false;
 const arr: Number[] = [1,2,3]; 
 //Number value
 for(let i=0;i<arr.length;i++){
-    console.log("I",i);
+    // console.log("I",i);
 }
 
 function calculateTax(taxYear:number): boolean{
     return taxYear > 2022;
 }
 
-console.log(calculateTax(20245));
+// console.log(calculateTax(20245));
 
 type User = {
     readonly id: number,
@@ -21,4 +21,13 @@ type User = {
 
 let user: User = {id:1, remote:(d)=> d};
 user.name = "Abinas";
-console.log(user.remote(123))
+// console.log(user.remote(1231233))
+
+
+const nameArr: String[] = [];
+nameArr.push("Abinas");
+// console.log(nameArr)
+
+//Tuples
+let ourTuple: [number, boolean, string];
+ourTuple = [12, true, "Test"]

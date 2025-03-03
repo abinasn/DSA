@@ -454,7 +454,7 @@ console.log(value) // Reference error
 
 // function debounce(fun, delay){
 //     let timeId = null
-    
+
 //     return function(...args){
 //         clearInterval(timeId);
 
@@ -524,30 +524,48 @@ console.log(value) // Reference error
 // const greet = person.sayHi;
 // greet(); // Output: "Hi, undefined" because this is window object without strict mode. Because sayHi function is called without any context.
 
+// let arr = Array.from([1,2,4]).map((x,i)=>(x*x*i));
+// let arr1 = Array.from([1,2,4], (x,i)=>(x*x*i));
+// let arr2 = Array.from({length: 5}, (_, i)=> i*i);
 
-var maximumProduct = function(nums) {
-    if(nums.length === 3){
-        return nums[0] * nums[1] * nums[2];
+// console.log(arr2);
+
+// const animals = ["ant", "bison", "camel", "duck", "elephant"];
+
+// console.log(animals.slice(1), animals);
+
+// Simplified conceptual implementation
+function useState(initialState) {
+    let currentState = initialState;
+    console.log("Current state before update11111:", currentState);
+    function getState(){
+        return currentState;
     }
-    let f = -Infinity, s= -Infinity, t = -Infinity, sm=Infinity, ssm=Infinity;
-    for(let num of nums){
-        if(f < num){
-            t = s;
-            s = f;
-            f = num
-        }else if (s < num){
-            t = s;
-            s = num
-        }else if(t < num){
-            t = num;
+
+    function setState(newStateOrUpdater) {
+        if (typeof newStateOrUpdater === 'function') {
+            // Print the function definition
+            console.log("Updater function:", newStateOrUpdater.toString());
+            // Print current state before update
+            console.log("Current state before update:", currentState);
+            // Apply the update
+            currentState = newStateOrUpdater(currentState);
+        } else {
+            // If it's a direct value, just use that
+            console.log("Direct value update:", newStateOrUpdater);
+            currentState = newStateOrUpdater;
         }
 
-        if(num < sm){
-            ssm = sm;
-            sm = num;
-        }else if(num < ssm){
-            ssm = num;
-        }
+        // Trigger re-render with the new state
+        console.log("New state after update:", currentState);
     }
-    return Math.max(f*s*t , f*sm*ssm);
-};
+
+    return [currentState, setState, getState];
+}
+
+const [state, setState, getState] = useState(0);
+console.log("State1",state)
+// Test with an updater function
+setState(n => n + 1);
+
+console.log("State2",getState())
