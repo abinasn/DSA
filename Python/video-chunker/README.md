@@ -26,11 +26,28 @@ User uploads a video → system detects shots → groups into chunks → saves r
 
 ## ⚙️ Chunking Rules
 
-1. Detect camera shot changes in the video
-2. Each chunk = max **12 seconds**
-3. Never cut in the middle of a shot
-4. If adding next shot exceeds 12s → end chunk before it
-5. If one shot itself is > 12s → it becomes its own chunk (only exception to the 12s rule)
+### The `merge` flag (configurable, default: `false`)
+
+**merge = false (default)**
+- Every camera shot becomes its own chunk
+- Simple, no grouping
+
+**merge = true**
+- Group consecutive shots together up to 12 seconds
+- Never cut in the middle of a shot
+- If adding the next shot exceeds 12s → close current chunk, start new one
+
+### The 12 second hard limit (always enforced)
+
+- 12 seconds is a **hard maximum** — no exceptions
+- If a single shot is longer than 12s → split it into multiple 12s pieces
+
+```
+Example: one shot = 27s, MAX = 12s
+→ chunk 1: 0s  → 12s
+→ chunk 2: 12s → 24s
+→ chunk 3: 24s → 27s
+```
 
 ---
 
@@ -45,13 +62,14 @@ User uploads a video → system detects shots → groups into chunks → saves r
 ### Create Slice Job
 - User gives the job a name
 - User uploads a video (`.mp4`)
+- User selects merge mode (on/off, default off)
 - Video uploads to S3
 - Job is created in MongoDB with status `queued`
 - Processing runs in the background (async)
 - User does not wait — they go back to dashboard
 
 ### Job Detail Page
-- Shows job info (name, status, created date)
+- Shows job info (name, status, created date, merge mode used)
 - Shows all chunks in a list with load more
 - Each chunk shows: name, start time, end time, duration (in timecode format)
 - Each chunk is previewable with a simple video player
@@ -62,8 +80,9 @@ User uploads a video → system detects shots → groups into chunks → saves r
 - Max **2 jobs** running at a time (CPU protection)
 - Downloads video from S3
 - Runs PySceneDetect (with `frame_skip=1` for CPU efficiency)
-- Groups shots into 12s chunks
-- Cuts video using `split_video_ffmpeg`
+- Splits any shot > 12s into hard 12s pieces
+- Groups shots into chunks (based on merge flag)
+- Cuts video using ffmpeg
 - Uploads chunks to S3
 - Saves chunk data to MongoDB
 - Updates job status → `processing` → `completed` / `failed`
