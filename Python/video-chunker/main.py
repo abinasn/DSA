@@ -1,7 +1,9 @@
 import os
+import re
 import sys
 import csv
 import json
+import shutil
 from scenedetect import detect, AdaptiveDetector
 
 # ── Constants ──────────────────────────────────────
@@ -9,6 +11,27 @@ INPUT_DIR = "input"
 OUTPUT_DIR = "output"
 MAX_CHUNK_DURATION = 12.0  # seconds
 MERGE_SHOTS = False
+
+
+def sanitize_name(video_path):
+    name = os.path.splitext(os.path.basename(video_path))[0]
+    name = name.lower()
+    name = re.sub(r"[^a-z0-9]+", "_", name)
+    name = name.strip("_")
+    return name
+
+
+def get_output_dir(video_path):
+    folder_name = sanitize_name(video_path)
+    output_path = os.path.join(OUTPUT_DIR, folder_name)
+
+    if os.path.exists(output_path):
+        print(f"🗑️  Removing existing folder: {output_path}")
+        shutil.rmtree(output_path)
+
+    os.makedirs(output_path)
+    print(f"📁 Output folder created: {output_path}")
+    return output_path
 
 
 def seconds_to_timecode(seconds):
@@ -64,6 +87,7 @@ def split_long_shot(shot):
 def group_shots_into_chunks(shots, merge=MERGE_SHOTS):
     print(f"🧠 Grouping shots into chunks (merge={merge})...")
 
+    # ── Step 1: expand any long shots first ──────────
     expanded_shots = []
     for shot in shots:
         if shot["duration"] > MAX_CHUNK_DURATION:
@@ -72,6 +96,7 @@ def group_shots_into_chunks(shots, merge=MERGE_SHOTS):
         else:
             expanded_shots.append(shot)
 
+    # ── Step 2: apply merge or no-merge logic ─────────
     chunks = []
 
     if not merge:
@@ -103,14 +128,20 @@ def group_shots_into_chunks(shots, merge=MERGE_SHOTS):
     return chunks
 
 
-def export_chunks(video_path, chunks):
-    print("✂️  Exporting chunks...")
+def export_chunks(video_path, chunks, job_output_dir, fast=False):
+    mode = "⚡ FAST (keyframe cuts)" if fast else "🎯 ACCURATE (frame-perfect)"
+    print(f"✂️  Exporting chunks... [{mode}]")
+
+    if fast:
+        codec_flags = "-c copy"
+    else:
+        codec_flags = "-c:v libx264 -preset fast -crf 18 -c:a aac -b:a 192k"
 
     report = []
 
     for index, chunk in enumerate(chunks):
         chunk_name = f"chunk_{index + 1:03d}"
-        output_path = os.path.join(OUTPUT_DIR, f"{chunk_name}.mp4")
+        output_path = os.path.join(job_output_dir, f"{chunk_name}.mp4")
         start_time = chunk[0]["start"]
         end_time = chunk[-1]["end"]
         duration = round(end_time - start_time, 3)
@@ -118,7 +149,8 @@ def export_chunks(video_path, chunks):
         os.system(
             f'ffmpeg -i "{video_path}" '
             f"-ss {start_time} -to {end_time} "
-            f'-c copy "{output_path}" -y -loglevel error'
+            f"{codec_flags} "
+            f'"{output_path}" -y -loglevel error'
         )
 
         report.append(
@@ -135,7 +167,7 @@ def export_chunks(video_path, chunks):
     return report
 
 
-def save_reports(report):
+def save_reports(report, job_output_dir):
     rows = []
     for row in report:
         rows.append(
@@ -149,14 +181,16 @@ def save_reports(report):
             }
         )
 
-    csv_path = os.path.join(OUTPUT_DIR, "chunks_report.csv")
+    # ── Save CSV ──────────────────────────────────────
+    csv_path = os.path.join(job_output_dir, "chunks_report.csv")
     with open(csv_path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=rows[0].keys())
         writer.writeheader()
         writer.writerows(rows)
     print(f"📄 CSV  saved → {csv_path}")
 
-    json_path = os.path.join(OUTPUT_DIR, "chunks_report.json")
+    # ── Save JSON ─────────────────────────────────────
+    json_path = os.path.join(job_output_dir, "chunks_report.json")
     with open(json_path, "w") as f:
         json.dump(rows, f, indent=4)
     print(f"📄 JSON saved → {json_path}")
@@ -164,15 +198,17 @@ def save_reports(report):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python main.py <video_path> [--merge]")
+        print("Usage: python main.py <video_path> [--merge] [--fast]")
         sys.exit(1)
 
     video_path = sys.argv[1]
     merge = "--merge" in sys.argv
+    fast = "--fast" in sys.argv
+    job_output_dir = get_output_dir(video_path)
 
     shots = detect_shots(video_path)
     chunks = group_shots_into_chunks(shots, merge=merge)
-    report = export_chunks(video_path, chunks)
-    save_reports(report)
+    report = export_chunks(video_path, chunks, job_output_dir, fast=fast)  # 👈 pass it
+    save_reports(report, job_output_dir)
 
     print("🎉 All done!")
