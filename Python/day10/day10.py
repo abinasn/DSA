@@ -135,42 +135,45 @@
 # print(repr(p1))  # Player('Abinas', 100)  ← __repr__ runs
 
 
-class Account:
-    def __init__(self, bal, name):
-        self.balance = bal
-        self.name = name
-        self.transactions = []  # ✅ fixed here
+# class Account:
+#     def __init__(self, bal, name):
+#         self.balance = bal
+#         self.name = name
+#         self.transactions = []  # ✅ fixed here
 
-    def deposit(self, amount):
-        self.balance += amount
-        self.transactions.append(amount)
+#     def deposit(self, amount):
+#         self.balance += amount
+#         self.transactions.append(amount)
 
-    def withdraw(self, amount):
-        if self.balance < amount:
-            print("Insufficient balance")
-            return
-        self.balance -= amount
-        self.transactions.append(-amount)
+#     def withdraw(self, amount):
+#         if self.balance < amount:
+#             print("Insufficient balance")
+#             return
+#         self.balance -= amount
+#         self.transactions.append(-amount)
 
-    def show_balance(self):
-        print(f"Current Balance: {self.balance}")
+#     def show_balance(self):
+#         print(f"Current Balance: {self.balance}")
 
-    def show_transactions(self):
-        print("Transaction History:")
-        for t in self.transactions:
-            if t > 0:
-                print(f"  Deposited: {t}")
-            else:
-                print(f"  Withdrawn: {abs(t)}")  # ✅ abs() removes the minus sign
+#     def show_transactions(self):
+#         print("Transaction History:")
+#         for t in self.transactions:
+#             if t > 0:
+#                 print(f"  Deposited: {t}")
+#             else:
+#                 print(f"  Withdrawn: {abs(t)}")  # ✅ abs() removes the minus sign
 
-    def __str__(self):
-        return f"Account[{self.name}] | Balance: {self.balance}"
+#     def __str__(self):
+#         return f"Account[{self.name}] | Balance: {self.balance}"
 
 
-acc = Account(1000, "Abinas")
-acc.deposit(600)
-acc.withdraw(200)
-acc.withdraw(20000)
-acc.show_balance()
-acc.show_transactions()
-print(acc)
+# acc = Account(1000, "Abinas")
+# acc.deposit(600)
+# acc.withdraw(200)
+# acc.withdraw(20000)
+# acc.show_balance()
+# acc.show_transactions()
+# print(acc)
+
+l = [1, 2, 3]
+print(id(l[0]), id(l[1]), id(l[2]))

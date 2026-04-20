@@ -1,2 +1,1 @@
 scenedetect[opencv]
-ffmpeg-python

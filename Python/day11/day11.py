@@ -1,3 +1,5 @@
+import time
+
 numbers = [1, 2, 3, 4, 5]
 squared = []
 cube = [n**3 for n in numbers]
@@ -18,9 +20,6 @@ for name in names:
 
 print(lengths)  # {'Abinas': 6, 'Rahul': 5, 'Sara': 4}
 print(len_dict)
-
-
-import time
 
 
 def timer(func):
